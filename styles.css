@@ -1,0 +1,15 @@
+.table-nonfluid {
+   width: auto;
+}
+
+.attribute-heading {
+	background-color: gold !important;
+}
+
+.relation, .attribute {
+	white-space: nowrap;
+}
+
+.selected {
+	 background-color: lightgreen !important;
+}
