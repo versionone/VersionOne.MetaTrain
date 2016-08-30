@@ -1,6 +1,6 @@
 # Get on that train
 
-https://www.youtube.com/watch?v=UZkrVSB4uAw
+http://screencast.com/t/hMR3R8VEt *
 
 # Running it
 
@@ -24,3 +24,6 @@ Next, you can:
   * Press the `back` link to go back to the parent asset type
 
 ![attributes.png](attributes.png)  
+
+# Credits
+* [Folsom Prison Blues](https://www.youtube.com/watch?v=UZkrVSB4uAw) by Johnny Cash
