@@ -1,7 +1,7 @@
 app = angular.module 'VersionOne.MetaTrain', ['ui.bootstrap']
 
 app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
-    baseUrl = 'https://crossorigin.me/https://www14.v1host.com/v1sdktesting/rest-1.v1/Data/'
+    baseUrl = 'https://crossorigin.me/https://www14.v1host.com'
 
     delete $http.defaults.headers.common['X-Requested-With']
 
@@ -10,12 +10,6 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             from: assetName
             select: []
         return query
-
-    #where: {}
-    #filter: []
-    #paging:
-    #    page: -1
-    #    size: -1
 
     resetQueryFilter = (query) ->
         query.filter = []
@@ -52,6 +46,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             query: makeQuery(data.Token)
         }
 
+    metaListReset = () -> metaList.length = 0
+
     metaListAdd = (metaData, attrName, query) ->
         lastIndex = metaList.length - 1
         metaInfo = massageTheMeta(metaData)        
@@ -63,7 +59,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         metaList.push metaInfo
 
     $scope.explore = (href) ->
-        $http.get('https://crossorigin.me/https://www14.v1host.com' + href + '?accept=text/json').
+        metaListReset()
+        $http.get(baseUrl + href + '?accept=text/json').
             success (data) -> 
                 metaListAdd data
 
@@ -88,7 +85,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         if obj
             query.select = _.without(query.select, obj)
         else
-            $http.get('https://crossorigin.me/https://www14.v1host.com' + href + '?accept=text/json').
+            $http.get(baseUrl + href + '?accept=text/json').
                 success (data) ->
                     metaListAdd data, attrName, query
                     $anchorScroll('asset-type')
@@ -138,7 +135,6 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             metaList[metaList.length - 1].visible = true
 
     $scope.metaList = metaList
-    $scope.path = {val: ''}
 
     $scope.queryRender = () ->
         if metaList.length > 0
@@ -147,6 +143,24 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         else
             return ''
 
-    $scope.explore '/v1sdktesting/meta.v1/Scope'
+    $scope.assetsVisible = true
+
+    $scope.assetTypes = {types:[]}
+
+    $scope.highlightedAsset = (assetType) -> _.contains(['Scope', 'Story', 'Defect', 'Task', 'Test'], assetType.Name)
+
+    $scope.assetTypesShow = () -> $scope.assetsVisible = true
+
+    $http.get(baseUrl + '/v1sdktesting/rest-1.v1/Data/AssetType?sel=Name' + '&accept=text/json&ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurufCiPXP0wj/Pzf0dSjKKxBjP2DesXYad30GuCU16YZk').success (data) ->
+        assetTypes = _.map(data.Assets, (assetType) ->
+            return { Name: assetType.Attributes.Name.value }
+        )
+        assetTypes = _.sortBy assetTypes, (assetType) -> assetType.Name
+
+        $scope.assetTypes.types = assetTypes
+
+    $scope.assetSelect = (assetType) ->
+        $scope.explore '/v1sdktesting/meta.v1/' + assetType.Name
+        $scope.assetsVisible = false
 
 angular.bootstrap document, ['VersionOne.MetaTrain']

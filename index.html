@@ -16,15 +16,26 @@
 	<body>
 
 	<div ng-controller='HomeController'>
-	 	<div class='container'>
-	 		<div class='row'>
-	 			<div class='col-md-12 well well-small'>
-	 				<strong>Query path:</strong> <input ng-model='path.val' class='span12' />
-	 			</div>
-	 		</div>
-	 	</div>
-	 	<hr />
-	   	<div class='container'>
+		<center>
+			<h2>MetaTrain</h2>
+			I hear the train a comin'
+			</br>
+			<a href='https://www.youtube.com/watch?v=UZkrVSB4uAw' target='_blank'><img src='johnny.png' /></a>
+		</center>
+		
+		<div ng-show='assetsVisible' ng-cloak>
+			<center>
+					<h3>Pick an Asset Type</h3>
+					<span ng-repeat='type in assetTypes.types'><span class='label' ng-class='{"label-success": highlightedAsset(type), "label-info": !highlightedAsset(type)}' ng-click='assetSelect(type)'>&nbsp;{{type.Name}}&nbsp;</span>&nbsp;&nbsp;</span>
+			</center>
+		</div>
+
+	   	<div class='container' ng-show='!assetsVisible' ng-cloak>
+	   		<div class='row'>
+	   			<div class='span12'>
+	   				<a class='btn btn-mini btn-info' ng-click='assetTypesShow()'><i class='icon-backward'>&nbsp;</i> Reset</a>
+	   			</div>
+	   		</div>
 			<div class='row'>
 				<div class='span8'>
 					<div ng-repeat='item in metaList' ng-cloak>
