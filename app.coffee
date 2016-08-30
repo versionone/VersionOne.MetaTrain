@@ -116,18 +116,19 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         exists: '+'
         notExists: '-'
 
-    $scope.filtersUpdate = (attr) ->
+    $scope.filtersUpdate = (item) ->
         query = currentQuery()
+        resetQueryFilter(query)
 
-        if (attr.filters.length > 0)
-            resetQueryFilter(query)
-
-            for filter in attr.filters
-                token = operatorsMap[filter.operator]
-                values = _.map(filter.values, (val) ->
-                    return '"' + val.value + '"' # TODO clean up
-                ).join(',')
-                query.filter.push attr.Name + token + values
+        for attr in item.Attributes
+            if (attr.filters.length > 0)
+                for filter in attr.filters
+                    token = operatorsMap[filter.operator]
+                    values = _.map(filter.values, (val) ->
+                        return '"' + val.value + '"' # TODO clean up
+                    ).join(',')
+                    if(token != "")
+                        query.filter.push attr.Name + token + values
 
     $scope.metaBack = () ->
         if metaList.length > 1

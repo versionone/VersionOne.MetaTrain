@@ -69,7 +69,7 @@
 							  										<span style='font-size: 80%' ng-click='filterRemove(attr, filter)'><i class='icon-minus-sign' label='Remove filter'>&nbsp;</i></span>
 							  									</td>
 							  									<td>
-																	<select style='width: 50px' ng-model='filter.operator' ng-change='filtersUpdate(attr)'>
+																	<select style='width: 50px' ng-model='filter.operator' ng-change='filtersUpdate(item)'>
 								  										<option value='none'></option>
 								  										<option value='equal'>=</option>
 											  							<option value='notEqual'>!=</option>
@@ -83,7 +83,7 @@
 								  								</td>
 								  								<td>
 								  									<span ng-repeat='filterValue in filter.values'>
-																		<input type='text' ng-model='filterValue.value' ng-change='filtersUpdate(attr)'/>
+																		<input type='text' ng-model='filterValue.value' ng-change='filtersUpdate(item)'/>
 									  									<i class='icon-remove' ng-click='filterValueRemove(filter, filterValue)'>&nbsp;</i>
 									  									<br />
 								  									</span>
