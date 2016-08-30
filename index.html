@@ -40,14 +40,52 @@
 							  			</tr>
 							  			<tr>
 							  				<th>Name</th>
-							  				<th><a href='http://community.versionone.com/VersionOne_Connect/Developer_Library/Getting_Started/Platform_Concepts/Attribute_Types' target='_blank'>Type</a></th>			  				
+							  				<th><a href='http://community.versionone.com/VersionOne_Connect/Developer_Library/Getting_Started/Platform_Concepts/Attribute_Types' target='_blank'>Type</a></th>	  				
 							  				<th colspan='2'>Meta Info</th>
 							  			</tr>
-							  			<tr ng-repeat='attr in item.Attributes'>							  			
-							  				<td ng-click='toggleSelect(attr.Name)' class='attribute' ng-class='{selected: selected(attr.Name)}'>
-							  					<i class='icon-plus-sign' ng-show='!selected(attr.Name)'>&nbsp;</i>
-							  					<i class='icon-minus-sign' ng-show='selected(attr.Name)'></i>
-							  					{{attr.Name}}
+							  			<tr ng-repeat='attr in item.Attributes'>  			
+							  				<td class='attribute' ng-class='{selected: selected(attr.Name)}'>
+							  					<i class='icon-ok' ng-show='!selected(attr.Name)' 
+							  						ng-click='toggleSelect(attr.Name)'>&nbsp;</i>
+							  					<i class='icon-remove' ng-show='selected(attr.Name)'
+							  						ng-click='toggleSelect(attr.Name)'></i>
+							  					{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i>
+							  					<div ng-show='attr.filterVisible' class='well well-small'>
+							  						<div ng-repeat='filter in attr.filters'>
+							  							<table border='0' cellpadding='0' cellspacing='0'>
+							  								<tr style='border-top: 2px solid goldenrod'>
+							  									<td>
+							  										<span style='font-size: 80%' ng-click='filterRemove(attr, filter)'><i class='icon-minus-sign' label='Remove filter'>&nbsp;</i></span>
+							  									</td>
+							  									<td>
+								  									<select style='width: 50px' ng-model='filter.operator'>
+								  										<option value='none'></option>
+								  										<option value='equal'>=</option>
+											  							<option value='notEqual'>!=</option>
+																		<option value='greaterThan'>&gt;</option>
+																		<option value='greaterThanOrEqual'>&gt;=</option>
+																		<option value='lessThan'>&lt;</option>
+																		<option value='lessThanOrEqual'>&lt;=</option>
+																		<option value='exists'>+ (exists)</option>
+																		<option value='notExists'>- (not exists)</option>
+								  									</select>
+								  								</td>
+								  								<td>
+								  									<span ng-repeat='filterValue in filter.values'>
+									  									<input type='text' ng-model='filterValue.value' />
+									  									<i class='icon-remove' ng-click='filterValueRemove(filter, filterValue)'>&nbsp;</i>
+									  									<br />
+								  									</span>
+									  								<span style='font-size: 70%; top: -10px; position: relative;' class><span ng-click='filterValueAdd(filter)'><i class='icon-plus'>&nbsp;</i> Add <b>OR</b> Value</span></span>
+									  							</td>
+									  						</tr>
+									  					</table>
+							  						</div>
+							  						<div style='font-size: 80%; padding-top: 8px;' ng-click='filterAdd(attr)'><i class='icon-plus-sign'>&nbsp;</i> Add Filter</div>
+							  						<div>
+							  							<a class='btn btn-success btn-mini' ng-click='filtersUpdate(attr)'>Update</a>
+							  						</div>
+							  					</div>
 							  				</td>
 							  				<td>{{attr.AttributeType}}</td>			  				
 							  				<td colspan='2'>
@@ -65,8 +103,8 @@
 							  			</tr>
 							  			<tr ng-repeat='rel in item.Relations'>
  											<td ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)' ng-class='{selected: selectedRelation(rel.Name)}'>
-							  					<i class='icon-plus-sign' ng-show='!selectedRelation(rel.Name)'>&nbsp;</i>
-							  					<i class='icon-minus-sign' ng-show='selectedRelation(rel.Name)'></i>
+							  					<i class='icon-ok' ng-show='!selectedRelation(rel.Name)'>&nbsp;</i>
+							  					<i class='icon-remove' ng-show='selectedRelation(rel.Name)'></i>
 							  					{{rel.Name}}
 											</td>
 							  				<td><span ng-show='!rel.IsMultivalue'>Single Value</span> <span ng-show='rel.IsMultivalue'>Multivalue</span>

@@ -15,7 +15,10 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     #filter: []
     #paging:
     #    page: -1
-    #    size: -1        
+    #    size: -1
+
+    resetQueryFilter = (query) ->
+        query.filter = []
 
     currentQuery = () ->
         metaIndex = metaList.length - 1
@@ -23,13 +26,23 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     metaList = []
 
+    createFilterValue = () -> return {value:''}
+
+    createFilter = () -> return {operator: 'none', values: [createFilterValue()]}
+
     massageTheMeta = (data) ->
         relations = _.where data.Attributes, {AttributeType:'Relation'}
         relations = _.sortBy relations, (rel) -> (!rel.IsRequired ? 'A' : 'Z') + rel.Name
         attributes = _.filter data.Attributes, (attr) -> attr.AttributeType != 'Relation'
         attributes = _.sortBy attributes, (attr) -> (!attr.IsRequired ? 'A' : 'Z') + attr.Name
         operations = data.operations
-        
+
+        attributes = _.map(attributes, (a) ->
+            a.filterVisible = false
+            a.filters = [createFilter()]
+            return a
+        )
+
         return {
             AssetName: data.Token
             Attributes: attributes
@@ -79,6 +92,45 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
                 success (data) ->
                     metaListAdd data, attrName, query
                     $anchorScroll('asset-type')
+
+    $scope.toggleFilter = (attr) ->
+        attr.filterVisible = !attr.filterVisible
+
+    $scope.filterAdd = (attr) ->
+        attr.filters.push(createFilter())
+
+    $scope.filterRemove = (attr, filter) ->
+        attr.filters = _.without(attr.filters, filter)
+
+    $scope.filterValueAdd = (filter) ->
+        filter.values.push(createFilterValue())
+
+    $scope.filterValueRemove = (filter, filterValue) ->
+        filter.values = _.without(filter.values, filterValue)
+
+    operatorsMap =
+        none: ''
+        equal: '='
+        notEqual: '!='
+        greaterThan: '>'
+        greaterThanOrEqual: '>='
+        lessThan: '<'
+        lessThanOrEqual: '<='
+        exists: '+'
+        notExists: '-'
+
+    $scope.filtersUpdate = (attr) ->
+        query = currentQuery()
+
+        if (attr.filters.length > 0)
+            resetQueryFilter(query)
+
+            for filter in attr.filters
+                token = operatorsMap[filter.operator]
+                values = _.map(filter.values, (val) ->
+                    return '"' + val.value + '"' # TODO clean up
+                ).join(',')
+                query.filter.push attr.Name + token + values
 
     $scope.metaBack = () ->
         if metaList.length > 1
