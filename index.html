@@ -66,7 +66,7 @@
 							  							<table border='0' cellpadding='0' cellspacing='0'>
 							  								<tr style='border-top: 2px solid goldenrod'>
 							  									<td>
-							  										<span style='font-size: 80%' ng-click='filterRemove(attr, filter)'><i class='icon-minus-sign' label='Remove filter'>&nbsp;</i></span>
+																	<span style='font-size: 80%' ng-click='filterRemove(attr, filter); filtersUpdate(item)'><i class='icon-minus-sign' label='Remove filter'>&nbsp;</i></span>
 							  									</td>
 							  									<td>
 																	<select style='width: 50px' ng-model='filter.operator' ng-change='filtersUpdate(item)'>
