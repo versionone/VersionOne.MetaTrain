@@ -6,8 +6,9 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     delete $http.defaults.headers.common['X-Requested-With']
 
     makeQuery = (assetName) ->
-        query = 
+        query =
             from: assetName
+            filter: []
             select: []
         return query
 
@@ -50,7 +51,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     metaListAdd = (metaData, attrName, query) ->
         lastIndex = metaList.length - 1
-        metaInfo = massageTheMeta(metaData)        
+        metaInfo = massageTheMeta metaData
         if lastIndex >= 0
             metaList[lastIndex].visible = false
             if attrName
@@ -61,7 +62,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     $scope.explore = (href) ->
         metaListReset()
         $http.get(baseUrl + href + '?accept=text/json').
-            success (data) -> 
+            success (data) ->
                 metaListAdd data
 
     $scope.selected = (attrName) ->
@@ -137,10 +138,28 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.metaList = metaList
 
+    removeEmptyArrayProperties = (obj) ->
+        for key, val of obj
+            if _.isArray(val) && val.length == 0
+                delete obj[key]
+            else if _.isArray(val) && val.length > 0
+                removeEmptyArrayProperties val
+            else if _.isObject(val)
+                removeEmptyArrayProperties val
+
     $scope.queryRender = () ->
         if metaList.length > 0
-            return YAML.stringify(metaList[0].query, 100, 2)
-            #return JSON.stringify(metaList[0].query, '\t', 2)
+            querySerialized = JSON.stringify(metaList[0].query)
+            query = JSON.parse(querySerialized)
+
+            removeEmptyArrayProperties query
+
+            yaml = YAML.stringify(query, 100, 2)
+            yaml = yaml.replace(/-\s*?from:/g, '- from:')
+
+            return yaml
+
+            #return JSON.stringify(query, '\t', 2)
         else
             return ''
 
