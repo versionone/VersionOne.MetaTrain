@@ -170,6 +170,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
       if rawFilter
         filters = rawFilter.split(',')
         if filters.length > 0 && filters[0] != ''
+          filters = _.without(filters, '')
           matches = _.some filters, (filter) ->
             if $scope.attributeSearch.prefixMatch
               return attrName.toLowerCase().indexOf(filter.toLowerCase()) == 0
