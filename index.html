@@ -3,15 +3,15 @@
 	<html>
 	<head>
 		<title>VersionOne MetaTrain</title>
-		<meta name='viewport' content='width=device-width, initial-scale=1.0'>		
-		<script src='lib/jquery/jquery-1.10.2.min.js'></script>	
-		<script src='js/angular.min.js'></script>		
-		<script src='js/angular-resource.min.js'></script>		
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<script src='lib/jquery/jquery-1.10.2.min.js'></script>
+		<script src='js/angular.min.js'></script>
+		<script src='js/angular-resource.min.js'></script>
 		<script src='js/underscore.min.js'></script>
 		<script src='js/yaml.min.js'></script>
 		<link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet' media='screen' />
-		<script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js'></script>       
-		<link href='styles.css' rel='stylesheet' media='screen' />				
+		<script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js'></script>
+		<link href='styles.css' rel='stylesheet' media='screen' />
 	</head>
 	<body>
 
@@ -22,7 +22,7 @@
 			</br>
 			<a href='https://www.youtube.com/watch?v=UZkrVSB4uAw' target='_blank'><img src='johnny.png' /></a>
 		</center>
-		
+
 		<div ng-show='assetsVisible' ng-cloak>
 			<center>
 					<h3>Pick an Asset Type</h3>
@@ -39,24 +39,25 @@
 			<div class='row'>
 				<div class='span8'>
 					<div ng-repeat='item in metaList' ng-cloak>
-				     	<div ng-init='expanded = true' ng-show='item.visible'>				     		
-				     		<a name='asset-type'></a><span ng-show='metaList.length != 1' ng-click='metaBack()'><i class='icon-circle-arrow-left'></i> <b>back</b>&nbsp;</span>				     		
+				     	<div ng-init='expanded = true' ng-show='item.visible'>
+				     		<a name='asset-type'></a><span ng-show='metaList.length != 1' ng-click='metaBack()'><i class='icon-circle-arrow-left'></i> <b>back</b>&nbsp;</span>
 				     		<strong>Asset Type</strong>: {{item.AssetName}} <i class='icon-plus' ng-click='expanded = !expanded'></i>
 				     		<div ng-show='expanded' class='details'>
 							  <tabset>
 							  	<tab heading='Attributes'>
+										<b>Filter by attribute name:</b> <input type='text' ng-model='attributeSearch.search' />&nbsp;<span style='font-size: 75%; color: darkgray'><input type='checkbox' ng-model='attributeSearch.prefixMatch'>&nbsp;prefix-match</span>
 							  		<table class='table table-bordered table-striped table-nonfluid'>
 							  			<tr>
 							  				<th colspan='4' class='attribute-heading'>Scalar Attributes</th>
 							  			</tr>
 							  			<tr>
 							  				<th>Name</th>
-							  				<th><a href='http://community.versionone.com/VersionOne_Connect/Developer_Library/Getting_Started/Platform_Concepts/Attribute_Types' target='_blank'>Type</a></th>	  				
+							  				<th><a href='http://community.versionone.com/VersionOne_Connect/Developer_Library/Getting_Started/Platform_Concepts/Attribute_Types' target='_blank'>Type</a></th>
 							  				<th colspan='2'>Meta Info</th>
 							  			</tr>
-							  			<tr ng-repeat='attr in item.Attributes'>  			
+							  			<tr ng-repeat='attr in item.Attributes' ng-show='attributeMatchesFilter(attr.Name)'>
 							  				<td class='attribute' ng-class='{selected: selected(attr.Name)}'>
-							  					<i class='icon-ok' ng-show='!selected(attr.Name)' 
+							  					<i class='icon-ok' ng-show='!selected(attr.Name)'
 							  						ng-click='toggleSelect(attr.Name)'>&nbsp;</i>
 							  					<i class='icon-remove' ng-show='selected(attr.Name)'
 							  						ng-click='toggleSelect(attr.Name)'></i>
@@ -95,7 +96,7 @@
 													<div style='font-size: 80%; padding-top: 8px;' ng-click='filterAdd(attr)'><i class='icon-plus-sign'>&nbsp;</i> Add Filter</div>
 							  					</div>
 							  				</td>
-							  				<td>{{attr.AttributeType}}</td>			  				
+							  				<td>{{attr.AttributeType}}</td>
 							  				<td colspan='2'>
 							  					<span class='badge badge-important' ng-show='attr.IsRequired'>required</span> <span class='badge badge-warning' ng-show='attr.IsReadOnly'>read only</span> <span class='badge badge-success' ng-show='!attr.IsReadOnly'>read/write</span>
 							  				</td>
@@ -107,9 +108,9 @@
 							  				<th>Name</th>
 							  				<th>Type</th>
 							  				<th>Relation to / from</th>
-											<th>Meta Info</th>			
+											<th>Meta Info</th>
 							  			</tr>
-							  			<tr ng-repeat='rel in item.Relations'>
+							  			<tr ng-repeat='rel in item.Relations' ng-show='attributeMatchesFilter(rel.Name)'>
  											<td ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)' ng-class='{selected: selectedRelation(rel.Name)}'>
 							  					<i class='icon-ok' ng-show='!selectedRelation(rel.Name)'>&nbsp;</i>
 							  					<i class='icon-remove' ng-show='selectedRelation(rel.Name)'></i>
@@ -127,7 +128,7 @@
 								</tab>
 							  	<tab heading='Operations'>
 							  		{{item.Operations | json}}
-								</tab>								
+								</tab>
 							  </tabset>
 							</div>
 						</div>
@@ -137,13 +138,13 @@
 				<div class='span4'>
 					<strong>Query Definition</strong>:<br />
 					<pre class='well'>{{queryRender()}}</pre>
-				</div>				
+				</div>
 			</div>
 	   	</div>
-	</div> 			
+	</div>
 
 	</body>
 
-	<script src='app.coffee' type='text/coffeescript'></script>	
+	<script src='app.coffee' type='text/coffeescript'></script>
 	<script type="text/javascript" src="js/coffee-script.min.js"></script>
 </html>

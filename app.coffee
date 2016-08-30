@@ -163,6 +163,23 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         else
             return ''
 
+    $scope.attributeSearch = {search:'', prefixMatch: false}
+
+    $scope.attributeMatchesFilter = (attrName) ->
+      rawFilter = $scope.attributeSearch.search
+      if rawFilter
+        filters = rawFilter.split(',')
+        if filters.length > 0 && filters[0] != ''
+          matches = _.some filters, (filter) ->
+            if $scope.attributeSearch.prefixMatch
+              return attrName.toLowerCase().indexOf(filter.toLowerCase()) == 0
+            else
+              return attrName.toLowerCase().search(filter.toLowerCase()) > -1
+          return matches
+        else
+          return true
+      return true
+
     $scope.assetsVisible = true
 
     $scope.assetTypes = {types:[]}
