@@ -84,7 +84,7 @@
 								  								<td>
 								  									<span ng-repeat='filterValue in filter.values'>
 																		<input type='text' ng-model='filterValue.value' ng-change='filtersUpdate(item)'/>
-									  									<i class='icon-remove' ng-click='filterValueRemove(filter, filterValue)'>&nbsp;</i>
+																		<i class='icon-remove' ng-click='filterValueRemove(filter, filterValue);filtersUpdate(item)'>&nbsp;</i>
 									  									<br />
 								  									</span>
 									  								<span style='font-size: 70%; top: -10px; position: relative;' class><span ng-click='filterValueAdd(filter)'><i class='icon-plus'>&nbsp;</i> Add <b>OR</b> Value</span></span>
