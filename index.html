@@ -141,9 +141,16 @@
 				<div class='span4'>
 					<strong>Query Definition</strong>: <br />
 					<pre class='well'>{{queryRender()}}</pre><br />
-					<button ng-click='tryIt()'>Try it!</button><br />
-					<pre class='well'>
-						<json-formatter open="1" json="queryResult"></json-formatter>
+					<button class="btn btn-info" ng-click='tryIt()'>Try it!</button>					
+					<label class="radio-inline pull-right"">
+						<input type="radio" name="inlineRadioOptions" value="raw" ng-model='radioOption'> raw view
+						<input type="radio" name="inlineRadioOptions" value="json" ng-model='radioOption'> json formatted
+					</label><br />
+					<pre class='well' ng-show="showFormatted('json')">
+						<json-formatter open="100" json="queryResult"></json-formatter>
+					</pre>
+					<pre class='well' ng-show="showFormatted('raw')">
+						{{queryResult}}
 					</pre>
 				</div>
 			</div>
