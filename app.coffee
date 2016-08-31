@@ -59,6 +59,14 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
                 query.select.push metaInfo.query
         metaList.push metaInfo
 
+    $scope.queryResult = {}
+
+    $scope.tryIt = () ->
+        url = 'http://localhost:8080/https://www14.v1host.com' + '/v1sdktesting/query.v1?ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurufCiPXP0wj/Pzf0dSjKKxBjP2DesXYad30GuCU16YZk'
+        $http.post(url, $scope.queryRender()).
+            success (data) ->
+                $scope.queryResult = data
+
     $scope.explore = (href) ->
         metaListReset()
         $http.get(baseUrl + href + '?accept=text/json').
