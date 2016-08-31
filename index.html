@@ -139,7 +139,12 @@
 
 				</div>
 				<div class='span4'>
-					<strong>Query Definition</strong>: <br />
+					<strong>Query Definition</strong>:
+					<label class="radio-inline pull-right"">
+						<input type="radio" name="inlineRadioOptionsPayload" value="yaml" ng-model='radioOptionPayload'> yaml view
+						<input type="radio" name="inlineRadioOptionsPayload" value="json" ng-model='radioOptionPayload'> json view
+					</label>
+					<br />
 					<pre class='well'>{{queryRender()}}</pre><br />
 					<button class="btn btn-info" ng-click='tryIt()'>Try it!</button>					
 					<label class="radio-inline pull-right"">

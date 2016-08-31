@@ -62,6 +62,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     $scope.queryResult = {}
     $scope.showResults = false
     $scope.radioOption = 'raw'
+    $scope.radioOptionPayload = 'yaml'
     $scope.showFormatted = (value) ->
         $scope.showResults && $scope.radioOption == value
 
@@ -170,7 +171,10 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             yaml = YAML.stringify(query, 100, 2)
             yaml = yaml.replace(/-\s*?from:/g, '- from:')
 
-            return yaml
+            if $scope.radioOptionPayload == 'yaml'
+                return yaml
+            else
+                return JSON.stringify(query, '\t', 2)
 
             #return JSON.stringify(query, '\t', 2)
         else
