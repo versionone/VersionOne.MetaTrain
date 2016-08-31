@@ -5,12 +5,15 @@
 		<title>VersionOne MetaTrain</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 		<script src='lib/jquery/jquery-1.10.2.min.js'></script>
-		<script src='js/angular.min.js'></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 		<script src='js/angular-resource.min.js'></script>
 		<script src='js/underscore.min.js'></script>
 		<script src='js/yaml.min.js'></script>
 		<link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet' media='screen' />
 		<script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js'></script>
+		<script src='js/bundle.js'></script>
+		
+		<link href='json-formatter.css' rel='stylesheet' media='screen' />
 		<link href='styles.css' rel='stylesheet' media='screen' />
 	</head>
 	<body>
@@ -41,7 +44,7 @@
 					<div ng-repeat='item in metaList' ng-cloak>
 				     	<div ng-init='expanded = true' ng-show='item.visible'>
 				     		<a name='asset-type'></a><span ng-show='metaList.length != 1' ng-click='metaBack()'><i class='icon-circle-arrow-left'></i> <b>back</b>&nbsp;</span>
-				     		<strong>Asset Type</strong>: {{item.AssetName}} <i class='icon-plus' ng-click='expanded = !expanded'></i>
+				     		<strong>Asset Type</strong>: {{item.AssetName}} <i ng-class="expanded ? 'icon-minus' : 'icon-plus'" ng-click='expanded = !expanded'></i>
 				     		<div ng-show='expanded' class='details'>
 							  <tabset>
 							  	<tab heading='Attributes'>
@@ -136,9 +139,10 @@
 
 				</div>
 				<div class='span4'>
-					<strong>Query Definition</strong><button ng-click='tryIt()'>Try it!</button>:<br />
-					<pre class='well'>{{queryRender()}}</pre>
-					<pre class='well'>{{queryResult}}</pre>
+					<strong>Query Definition</strong>: <br />
+					<pre class='well'>{{queryRender()}}</pre><br />
+					<button ng-click='tryIt()'>Try it!</button>
+					<pre id="jsonContent" class='well'></pre>
 				</div>
 			</div>
 	   	</div>
