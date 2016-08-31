@@ -11,7 +11,7 @@
 		<script src='js/yaml.min.js'></script>
 		<link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet' media='screen' />
 		<script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js'></script>
-		<script src='js/bundle.js'></script>
+		<script src='js/json-formatter.js'></script>
 		
 		<link href='json-formatter.css' rel='stylesheet' media='screen' />
 		<link href='styles.css' rel='stylesheet' media='screen' />
@@ -141,8 +141,10 @@
 				<div class='span4'>
 					<strong>Query Definition</strong>: <br />
 					<pre class='well'>{{queryRender()}}</pre><br />
-					<button ng-click='tryIt()'>Try it!</button>
-					<pre id="jsonContent" class='well'></pre>
+					<button ng-click='tryIt()'>Try it!</button><br />
+					<pre class='well'>
+						<json-formatter open="1" json="queryResult"></json-formatter>
+					</pre>
 				</div>
 			</div>
 	   	</div>
