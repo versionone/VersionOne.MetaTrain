@@ -13,3 +13,5 @@
 .selected {
 	 background-color: lightgreen !important;
 }
+
+.ace_editor { height: 200px; width: 400px; }

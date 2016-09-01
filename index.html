@@ -9,6 +9,10 @@
 		<script src='js/angular-resource.min.js'></script>
 		<script src='js/underscore.min.js'></script>
 		<script src='js/yaml.min.js'></script>
+
+		<script type="text/javascript" src="lib/ace/src/ace.js"></script>
+		<script type="text/javascript" src="lib/ace/ui-ace.js"></script>
+
 		<link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet' media='screen' />
 		<script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js'></script>
 		<script src='js/json-formatter.js'></script>
@@ -64,7 +68,7 @@
 							  						ng-click='toggleSelect(attr.Name)'>&nbsp;</i>
 							  					<i class='icon-remove' ng-show='selected(attr.Name)'
 							  						ng-click='toggleSelect(attr.Name)'></i>
-												{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i><i class='icon-arrow-up' ng-click='sortUp(attr)'>&nbsp;</i><i class='icon-arrow-down' ng-click='sortDown(attr)'>&nbsp;</i>
+												{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i><i class='icon-arrow-up' ng-click='sortUp(attr)'>&nbsp;</i><i class='icon-arrow-down' ng-click='sortDown(attr)'>&nbsp;</i>												
 							  					<div ng-show='attr.filterVisible' class='well well-small'>
 							  						<div ng-repeat='filter in attr.filters'>
 							  							<table border='0' cellpadding='0' cellspacing='0'>
@@ -114,10 +118,12 @@
 											<th>Meta Info</th>
 							  			</tr>
 							  			<tr ng-repeat='rel in item.Relations' ng-show='attributeMatchesFilter(rel.Name)'>
- 											<td ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)' ng-class='{selected: selectedRelation(rel.Name)}'>
-							  					<i class='icon-ok' ng-show='!selectedRelation(rel.Name)'>&nbsp;</i>
-							  					<i class='icon-remove' ng-show='selectedRelation(rel.Name)'></i>
+ 											<td  ng-class='{selected: selectedRelation(rel.Name)}'>
+							  					<i class='icon-ok' ng-show='!selectedRelation(rel.Name)' ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)'>&nbsp;</i>
+							  					<i class='icon-remove' ng-show='selectedRelation(rel.Name)' ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)'></i>
 							  					{{rel.Name}}
+							  					<select ng-change='changeAggregate(aggregateOption, rel)' ng-model='aggregateOption' ng-options="x for x in aggregators">
+												</select>
 											</td>
 							  				<td><span ng-show='!rel.IsMultivalue'>Single Value</span> <span ng-show='rel.IsMultivalue'>Multivalue</span>
 							  				</td>
@@ -143,9 +149,17 @@
 					<label class="radio-inline pull-right"">
 						<input type="radio" name="inlineRadioOptionsPayload" value="yaml" ng-model='radioOptionPayload'> yaml view
 						<input type="radio" name="inlineRadioOptionsPayload" value="json" ng-model='radioOptionPayload'> json view
+						<input type="checkbox" value="editor" ng-model='showEditor' ng-click='fillEditor()'> editor view
 					</label>
 					<br />
-					<pre class='well'>{{queryRender()}}</pre><br />
+					<pre ng-show='!showEditor' class='well'>{{queryRender()}}</pre><br />
+					<div ng-model='editor' ng-show='showEditor' ui-ace="{
+								  useWrapMode : true,
+								  showGutter: false,
+								  theme:'twilight',
+								  mode: 'yaml',
+								  firstLineNumber: 5,
+								}"></div>
 					<button class="btn btn-info" ng-click='tryIt()'>Try it!</button>					
 					<label class="radio-inline pull-right"">
 						<input type="radio" name="inlineRadioOptions" value="raw" ng-model='radioOption'> raw view

@@ -1,4 +1,4 @@
-app = angular.module 'VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter']
+app = angular.module 'VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter', 'ui.ace']
 
 app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     baseUrl = 'https://crossorigin.me/https://www14.v1host.com'
@@ -9,8 +9,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         query =
             from: assetName
             filter: []
-            select: []
             sort: []
+            select: []            
         return query
 
     resetQueryFilter = (query) ->
@@ -60,6 +60,35 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
                 query.select.push metaInfo.query
         metaList.push metaInfo
 
+    $scope.fillEditor = () ->
+        $scope.editor = $scope.queryRender()
+
+    $scope.aggregateOption = ''
+
+    $scope.aggregators = [
+        '',
+        'Sum',
+        'Count',
+        'DistinctCount',
+        'MinDate',
+        'MaxDate',
+        'And',
+        'Or',
+        'MaxState']
+
+    $scope.changeAggregate = (value, attr) ->
+        query = currentQuery()
+        aggregateName = getWitoutAgregateName(query.select, attr.Name)
+        aggregate = if value == '' then attr.Name else attr.Name + '.@' + value
+        query.select = _.without(query.select, aggregateName)
+        if (value != '')
+            query.select.push aggregate
+
+    getWitoutAgregateName = (select, attrName) ->
+        return _.filter(select, (ele) ->
+           return ele.split('.')[0] == attrName
+        )[0]
+
     $scope.queryResult = {}
     $scope.showResults = false
     $scope.radioOption = 'raw'
@@ -69,7 +98,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.tryIt = () ->
         url = 'http://localhost:8080/https://www14.v1host.com' + '/v1sdktesting/query.v1?ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurufCiPXP0wj/Pzf0dSjKKxBjP2DesXYad30GuCU16YZk'
-        $http.post(url, $scope.queryRender()).
+        payload = if $scope.showEditor then $scope.editor else $scope.queryRender()
+        $http.post(url, payload).
             success (data) ->
                 $scope.showResults = true
                 $scope.queryResult = data
