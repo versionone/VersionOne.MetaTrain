@@ -10,6 +10,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             from: assetName
             filter: []
             select: []
+            sort: []
         return query
 
     resetQueryFilter = (query) ->
@@ -108,6 +109,21 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     $scope.toggleFilter = (attr) ->
         attr.filterVisible = !attr.filterVisible
 
+    proccessSort = (sortValue) ->
+        query = currentQuery()
+        if _.contains(query.sort, sortValue)
+            query.sort = _.without(query.sort, sortValue)
+        else if _.contains(query.select, sortValue.substring(1))
+            query.sort.push sortValue
+
+    $scope.sortUp = (attr) ->
+        sortValue = '+' + attr.Name
+        proccessSort sortValue
+
+    $scope.sortDown = (attr) ->
+        sortValue = '-' + attr.Name
+        proccessSort sortValue
+
     $scope.filterAdd = (attr) ->
         attr.filters.push(createFilter())
 
@@ -160,6 +176,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
                 removeEmptyArrayProperties val
             else if _.isObject(val)
                 removeEmptyArrayProperties val
+
 
     $scope.queryRender = () ->
         if metaList.length > 0
