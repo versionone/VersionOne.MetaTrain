@@ -1,4 +1,4 @@
-app = angular.module 'VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter']
+app = angular.module 'VersionOne.MetaTrain', ['ngMaterial', 'jsonFormatter']
 
 app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     baseUrl = 'https://crossorigin.me/https://www14.v1host.com'
@@ -9,8 +9,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         query =
             from: assetName
             filter: []
-            select: []
             sort: []
+            select: []
         return query
 
     resetQueryFilter = (query) ->
@@ -64,6 +64,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
     $scope.showResults = false
     $scope.radioOption = 'raw'
     $scope.radioOptionPayload = 'yaml'
+    $scope.selectedIndex = 0
     $scope.showFormatted = (value) ->
         $scope.showResults && $scope.radioOption == value
 
@@ -146,6 +147,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         lessThanOrEqual: '<='
         exists: '+'
         notExists: '-'
+
+    $scope.operatorsMap = operatorsMap
 
     $scope.filtersUpdate = (item) ->
         query = currentQuery()
