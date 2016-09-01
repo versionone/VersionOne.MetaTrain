@@ -113,7 +113,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         query = currentQuery()
         if _.contains(query.sort, sortValue)
             query.sort = _.without(query.sort, sortValue)
-        else if _.contains(query.select, sortValue.substring(1))
+        else
             query.sort.push sortValue
 
     $scope.sortUp = (attr) ->
