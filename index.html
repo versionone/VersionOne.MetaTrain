@@ -16,7 +16,7 @@
 		<link href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet' media='screen' />
 		<script src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js'></script>
 		<script src='js/json-formatter.js'></script>
-		
+
 		<link href='json-formatter.css' rel='stylesheet' media='screen' />
 		<link href='styles.css' rel='stylesheet' media='screen' />
 	</head>
@@ -68,7 +68,7 @@
 							  						ng-click='toggleSelect(attr.Name)'>&nbsp;</i>
 							  					<i class='icon-remove' ng-show='selected(attr.Name)'
 							  						ng-click='toggleSelect(attr.Name)'></i>
-												{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i><i class='icon-arrow-up' ng-click='sortUp(attr)'>&nbsp;</i><i class='icon-arrow-down' ng-click='sortDown(attr)'>&nbsp;</i>												
+												{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i><i class='icon-arrow-up' ng-click='sortUp(attr)'>&nbsp;</i><i class='icon-arrow-down' ng-click='sortDown(attr)'>&nbsp;</i>
 							  					<div ng-show='attr.filterVisible' class='well well-small'>
 							  						<div ng-repeat='filter in attr.filters'>
 							  							<table border='0' cellpadding='0' cellspacing='0'>
@@ -147,9 +147,9 @@
 				<div class='span4'>
 					<strong>Query Definition</strong>:
 					<label class="radio-inline pull-right"">
-						<input type="radio" name="inlineRadioOptionsPayload" value="yaml" ng-model='radioOptionPayload'> yaml view
-						<input type="radio" name="inlineRadioOptionsPayload" value="json" ng-model='radioOptionPayload'> json view
-						<input type="checkbox" value="editor" ng-model='showEditor' ng-click='fillEditor()'> editor view
+						<input type="radio" name="inlineRadioOptionsPayload" value="yaml" ng-model='radioOptionPayload'> YAML view
+						<input type="radio" name="inlineRadioOptionsPayload" value="json" ng-model='radioOptionPayload'> JSON view
+						<input type="checkbox" value="editor" ng-model='showEditor' ng-click='fillEditor()'> Editor view
 					</label>
 					<br />
 					<pre ng-show='!showEditor' class='well'>{{queryRender()}}</pre><br />
@@ -160,10 +160,10 @@
 								  mode: 'yaml',
 								  firstLineNumber: 5,
 								}"></div>
-					<button class="btn btn-info" ng-click='tryIt()'>Try it!</button>					
+					<button class="btn btn-info" ng-click='tryIt()'>Try it!</button>
 					<label class="radio-inline pull-right"">
-						<input type="radio" name="inlineRadioOptions" value="raw" ng-model='radioOption'> raw view
-						<input type="radio" name="inlineRadioOptions" value="json" ng-model='radioOption'> json formatted
+						<input type="radio" name="inlineRadioOptions" value="raw" ng-model='radioOption'> Raw view
+						<input type="radio" name="inlineRadioOptions" value="json" ng-model='radioOption'> Formatted view
 					</label><br />
 					<pre class='well' ng-show="showFormatted('json')">
 						<json-formatter open="100" json="queryResult"></json-formatter>

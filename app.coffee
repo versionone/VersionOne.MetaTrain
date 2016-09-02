@@ -127,6 +127,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.toggleSelectRelation = (href, attrName) ->
         query = currentQuery()
+        attributeSearchReset()
         obj = _.findWhere(query.select, {from:attrName})
         if obj
             query.select = _.without(query.select, obj)
@@ -229,6 +230,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.attributeSearch = {search:'', prefixMatch: false}
 
+    attributeSearchReset = () -> $scope.attributeSearch.search = ''
+
     $scope.attributeMatchesFilter = (attrName) ->
       rawFilter = $scope.attributeSearch.search
       if rawFilter
@@ -263,6 +266,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.assetSelect = (assetType) ->
         $scope.explore '/VersionOne.Web/meta.v1/' + assetType.Name
+        attributeSearchReset()
         $scope.assetsVisible = false
 
 angular.bootstrap document, ['VersionOne.MetaTrain']
