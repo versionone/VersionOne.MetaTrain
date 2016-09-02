@@ -102,7 +102,8 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         $http.post(url, payload).
             success (data) ->
                 $scope.showResults = true
-                $scope.queryResult = data
+                $scope.queryResult = JSON.stringify(data, '\t', 2)
+                $scope.queryResultToBeFormatted = data
 
     $scope.explore = (href) ->
         metaListReset()
@@ -252,7 +253,9 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.assetTypes = {types:[]}
 
-    $scope.highlightedAsset = (assetType) -> _.contains(['Scope', 'Story', 'Defect', 'Task', 'Test'], assetType.Name)
+    highlightAssets = ['Scope', 'Story', 'Defect', 'Task', 'Test', 'Epic']
+
+    $scope.highlightedAsset = (assetType) -> _.contains(highlightAssets, assetType.Name)
 
     $scope.assetTypesShow = () -> $scope.assetsVisible = true
 
@@ -261,6 +264,9 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             return { Name: assetType.Attributes.Name.value }
         )
         assetTypes = _.sortBy assetTypes, (assetType) -> assetType.Name
+        highlights = _.filter assetTypes, $scope.highlightedAsset
+        assetTypes = _.without assetTypes, highlights[0], highlights[1], highlights[2], highlights[3], highlights[4], highlights[5]
+        assetTypes = _.union highlights, assetTypes
 
         $scope.assetTypes.types = assetTypes
 

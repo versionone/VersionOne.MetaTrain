@@ -33,7 +33,8 @@
 		<div ng-show='assetsVisible' ng-cloak>
 			<center>
 					<h3>Pick an Asset Type</h3>
-					<span ng-repeat='type in assetTypes.types'><span class='label' ng-class='{"label-success": highlightedAsset(type), "label-info": !highlightedAsset(type)}' ng-click='assetSelect(type)'>&nbsp;{{type.Name}}&nbsp;</span>&nbsp;&nbsp;</span>
+					<span ng-repeat='type in assetTypes.types'><span class='label' ng-class='{"label-success": highlightedAsset(type), "label-info": !highlightedAsset(type)}' ng-click='assetSelect(type)'>
+						<img ng-src='{{type.Name}}.png' width='40' height='40' ng-if='highlightedAsset(type)' />&nbsp;{{type.Name}}&nbsp;</span>&nbsp;&nbsp;<br ng-if='$index == 5' /><br ng-if='$index == 5' /><h4 ng-if='$index == 5'>Other types</h4></span>
 			</center>
 		</div>
 
@@ -165,12 +166,8 @@
 						<input type="radio" name="inlineRadioOptions" value="raw" ng-model='radioOption'> Raw view
 						<input type="radio" name="inlineRadioOptions" value="json" ng-model='radioOption'> Formatted view
 					</label><br />
-					<pre class='well' ng-show="showFormatted('json')">
-						<json-formatter open="100" json="queryResult"></json-formatter>
-					</pre>
-					<pre class='well' ng-show="showFormatted('raw')">
-						{{queryResult}}
-					</pre>
+					<pre class='well' ng-show="showFormatted('json')"><json-formatter open="100" json="queryResultToBeFormatted"></json-formatter></pre>
+					<pre class='well' ng-show="showFormatted('raw')">{{queryResult}}</pre>
 				</div>
 			</div>
 	   	</div>
