@@ -1,7 +1,7 @@
 app = angular.module 'VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter', 'ui.ace']
 
 app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
-    baseUrl = 'https://crossorigin.me/https://www14.v1host.com'
+    baseUrl = 'http://localhost:8080/http://localhost'
 
     delete $http.defaults.headers.common['X-Requested-With']
 
@@ -10,7 +10,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             from: assetName
             filter: []
             sort: []
-            select: []            
+            select: []
         return query
 
     resetQueryFilter = (query) ->
@@ -97,7 +97,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         $scope.showResults && $scope.radioOption == value
 
     $scope.tryIt = () ->
-        url = 'http://localhost:8080/https://www14.v1host.com' + '/v1sdktesting/query.v1?ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurufCiPXP0wj/Pzf0dSjKKxBjP2DesXYad30GuCU16YZk'
+        url = 'http://localhost:8080/http://localhost' + '/VersionOne.Web/query.v1?ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1'
         payload = if $scope.showEditor then $scope.editor else $scope.queryRender()
         $http.post(url, payload).
             success (data) ->
@@ -253,7 +253,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.assetTypesShow = () -> $scope.assetsVisible = true
 
-    $http.get(baseUrl + '/v1sdktesting/rest-1.v1/Data/AssetType?sel=Name' + '&accept=text/json&ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurufCiPXP0wj/Pzf0dSjKKxBjP2DesXYad30GuCU16YZk').success (data) ->
+    $http.get(baseUrl + '/VersionOne.Web/rest-1.v1/Data/AssetType?sel=Name' + '&accept=text/json&ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1').success (data) ->
         assetTypes = _.map(data.Assets, (assetType) ->
             return { Name: assetType.Attributes.Name.value }
         )
@@ -262,7 +262,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         $scope.assetTypes.types = assetTypes
 
     $scope.assetSelect = (assetType) ->
-        $scope.explore '/v1sdktesting/meta.v1/' + assetType.Name
+        $scope.explore '/VersionOne.Web/meta.v1/' + assetType.Name
         $scope.assetsVisible = false
 
 angular.bootstrap document, ['VersionOne.MetaTrain']
