@@ -1,7 +1,7 @@
-app = angular.module 'VersionOne.MetaTrain', ['ngMaterial', 'jsonFormatter']
+app = angular.module 'VersionOne.MetaTrain', ['ngMaterial', 'md.data.table','jsonFormatter']
 
 app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
-    baseUrl = 'https://crossorigin.me/https://www14.v1host.com'
+    baseUrl = 'http://localhost:8080/https://www14.v1host.com'
 
     delete $http.defaults.headers.common['X-Requested-With']
 
