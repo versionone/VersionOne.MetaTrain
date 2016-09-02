@@ -146,10 +146,10 @@
 				</div>
 				<div class='span4'>
 					<strong>Query Definition</strong>:
-					<label class="radio-inline pull-right"">
-						<input type="radio" name="inlineRadioOptionsPayload" value="yaml" ng-model='radioOptionPayload'> YAML view
-						<input type="radio" name="inlineRadioOptionsPayload" value="json" ng-model='radioOptionPayload'> JSON view
-						<input type="checkbox" value="editor" ng-model='showEditor' ng-click='fillEditor()'> Editor view
+					<label class="radio-inline pull-right"">View as:
+						<input type="radio" name="inlineRadioOptionsPayload" value="yaml" ng-model='radioOptionPayload'> YAML
+						<input type="radio" name="inlineRadioOptionsPayload" value="json" ng-model='radioOptionPayload'> JSON
+						<input type="checkbox" value="editor" ng-model='showEditor' ng-click='fillEditor()'> Editor
 					</label>
 					<br />
 					<pre ng-show='!showEditor' class='well'>{{queryRender()}}</pre><br />
