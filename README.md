@@ -4,11 +4,13 @@ http://screencast.com/t/hMR3R8VEt *
 
 # Running it
 
-* Clone the repo
+* You will need to run a proxy that can broker request to your VersionOne instance, since VersionOne does not support CORS. We use the `post` branch of this fork of `crossorigin.me`: [https://github.com/Pmmlabs/crossorigin.me/tree/post](https://github.com/Pmmlabs/crossorigin.me/tree/post). Running that branch opens a proxy at `http://localhost:8080`, which is what the code has hard-coded into it.
+* Clone the repo* 
 * `cd VersionOne.MetaTrain`
 * `npm install -g nws`
 * `nws`
-* You will have to modify a few URLs in the `app.coffee` file if you want to use your own instance and you'll need to grab your `ticket` value from your browser's cookies to update that too near the bottom of the file.
+* You will have to modify a few URLs in the `app.coffee` file if you want to use an instance other than `http://localhost/VersionOne.Web`. 
+* And, you'll need to grab your `ticket` value from your browser's cookies to update that too wherever the code has `ticket=...`
 
 # What to do
 
