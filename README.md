@@ -4,13 +4,23 @@ http://screencast.com/t/hMR3R8VEt *
 
 # Running it
 
-* You will need to run a proxy that can broker request to your VersionOne instance, since VersionOne does not support CORS. We use the `post` branch of this fork of `crossorigin.me`: [https://github.com/Pmmlabs/crossorigin.me/tree/post](https://github.com/Pmmlabs/crossorigin.me/tree/post). Running that branch opens a proxy at `http://localhost:8080`, which is what the code has hard-coded into it.
+* You will need to run a proxy that can broker request to your VersionOne instance, since VersionOne does not support CORS. We use the `post` branch of this fork of `crossorigin.me`: [https://github.com/Pmmlabs/crossorigin.me/tree/post](https://github.com/Pmmlabs/crossorigin.me/tree/post). Running that branch opens a proxy at `http://localhost:8080`, which is the default location in the code.
 * Clone the repo* 
 * `cd VersionOne.MetaTrain`
 * `npm install -g nws`
 * `nws`
-* You will have to modify a few URLs in the `app.coffee` file if you want to use an instance other than `http://localhost/VersionOne.Web`. 
-* And, you'll need to grab your `ticket` value from your browser's cookies to update that too wherever the code has `ticket=...`
+* You will have to modify a few variables in the `app.coffee` file if you want to use an instance other than `http://localhost/VersionOne.Web`. 
+* And, you'll need to grab your `ticket` value from your browser's cookies to update that in the code.
+
+## The configuration variable defaults are:
+
+```coffeescript
+proxyUrl = 'http://localhost:8080'
+v1HostUrl = 'http://localhost'
+v1InstanceName = 'VersionOne.Web'
+v1Ticket = 'HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1'
+```
+
 
 # What to do
 
