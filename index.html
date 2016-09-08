@@ -38,112 +38,104 @@
 			</center>
 		</div>
 
-	   	<div class='container' ng-show='!assetsVisible' ng-cloak>
-	   		<div class='row'>
-	   			<div class='span12'>
-	   				<a class='btn btn-mini btn-info' ng-click='assetTypesShow()'><i class='icon-backward'>&nbsp;</i> Reset</a>
-	   			</div>
+	  <div class='container' ng-show='!assetsVisible' ng-cloak>
+	   	<div class='row' style='margin-bottom: 8px;'>
+	   		<div class='span12'>
+	   			<a class='btn btn-mini btn-info' ng-click='assetTypesShow()'><i class='icon-backward'>&nbsp;</i> Reset</a>
 	   		</div>
+	   	</div>
 			<div class='row'>
 				<div class='span8'>
-					<div ng-repeat='item in metaList' ng-cloak>
-				     	<div ng-init='expanded = true' ng-show='item.visible'>
-				     		<a name='asset-type'></a><span ng-show='metaList.length != 1' ng-click='metaBack()'><i class='icon-circle-arrow-left'></i> <b>back</b>&nbsp;</span>
-				     		<strong>Asset Type</strong>: {{item.AssetName}} <i ng-class="expanded ? 'icon-minus' : 'icon-plus'" ng-click='expanded = !expanded'></i>
-				     		<div ng-show='expanded' class='details'>
-							  <tabset>
-							  	<tab heading='Attributes'>
-										<b>Filter by attribute name:</b> <input type='text' ng-model='attributeSearch.search' />&nbsp;<span style='font-size: 75%; color: darkgray'><input type='checkbox' ng-model='attributeSearch.prefixMatch'>&nbsp;prefix-match</span>
-							  		<table class='table table-bordered table-striped table-nonfluid'>
-							  			<tr>
-							  				<th colspan='4' class='attribute-heading'>Scalar Attributes</th>
-							  			</tr>
-							  			<tr>
-							  				<th>Name</th>
-							  				<th><a href='http://community.versionone.com/VersionOne_Connect/Developer_Library/Getting_Started/Platform_Concepts/Attribute_Types' target='_blank'>Type</a></th>
-							  				<th colspan='2'>Meta Info</th>
-							  			</tr>
-							  			<tr ng-repeat='attr in item.Attributes' ng-show='attributeMatchesFilter(attr.Name)'>
-							  				<td class='attribute' ng-class='{selected: selected(attr.Name)}'>
-							  					<i class='icon-ok' ng-show='!selected(attr.Name)'
-							  						ng-click='toggleSelect(attr.Name)'>&nbsp;</i>
-							  					<i class='icon-remove' ng-show='selected(attr.Name)'
-							  						ng-click='toggleSelect(attr.Name)'></i>
-												{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i><i class='icon-arrow-up' ng-click='sortUp(attr)'>&nbsp;</i><i class='icon-arrow-down' ng-click='sortDown(attr)'>&nbsp;</i>
-							  					<div ng-show='attr.filterVisible' class='well well-small'>
-							  						<div ng-repeat='filter in attr.filters'>
-							  							<table border='0' cellpadding='0' cellspacing='0'>
-							  								<tr style='border-top: 2px solid goldenrod'>
-							  									<td>
-																	<span style='font-size: 80%' ng-click='filterRemove(attr, filter); filtersUpdate(item)'><i class='icon-minus-sign' label='Remove filter'>&nbsp;</i></span>
-							  									</td>
-							  									<td>
-																	<select style='width: 50px' ng-model='filter.operator' ng-change='filtersUpdate(item)'>
-								  										<option value='none'></option>
-								  										<option value='equal'>=</option>
-											  							<option value='notEqual'>!=</option>
-																		<option value='greaterThan'>&gt;</option>
-																		<option value='greaterThanOrEqual'>&gt;=</option>
-																		<option value='lessThan'>&lt;</option>
-																		<option value='lessThanOrEqual'>&lt;=</option>
-																		<option value='exists'>+ (exists)</option>
-																		<option value='notExists'>- (not exists)</option>
-								  									</select>
-								  								</td>
-								  								<td>
-								  									<span ng-repeat='filterValue in filter.values'>
-																		<input type='text' ng-model='filterValue.value' ng-change='filtersUpdate(item)'/>
-																		<i class='icon-remove' ng-click='filterValueRemove(filter, filterValue);filtersUpdate(item)'>&nbsp;</i>
-									  									<br />
-								  									</span>
-									  								<span style='font-size: 70%; top: -10px; position: relative;' class><span ng-click='filterValueAdd(filter)'><i class='icon-plus'>&nbsp;</i> Add <b>OR</b> Value</span></span>
-									  							</td>
-									  						</tr>
-									  					</table>
-							  						</div>
-													<div style='font-size: 80%; padding-top: 8px;' ng-click='filterAdd(attr)'><i class='icon-plus-sign'>&nbsp;</i> Add Filter</div>
-							  					</div>
-							  				</td>
-							  				<td>{{attr.AttributeType}}</td>
-							  				<td colspan='2'>
-							  					<span class='badge badge-important' ng-show='attr.IsRequired'>required</span> <span class='badge badge-warning' ng-show='attr.IsReadOnly'>read only</span> <span class='badge badge-success' ng-show='!attr.IsReadOnly'>read/write</span>
-							  				</td>
-							  			</tr>
-							  			<tr>
-							  				<th colspan='4' class='attribute-heading'>Relations</th>
-							  			</tr>
-							  			<tr>
-							  				<th>Name</th>
-							  				<th>Type</th>
-							  				<th>Relation to / from</th>
-											<th>Meta Info</th>
-							  			</tr>
-							  			<tr ng-repeat='rel in item.Relations' ng-show='attributeMatchesFilter(rel.Name)'>
- 											<td  ng-class='{selected: selectedRelation(rel.Name)}'>
-							  					<i class='icon-ok' ng-show='!selectedRelation(rel.Name)' ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)'>&nbsp;</i>
-							  					<i class='icon-remove' ng-show='selectedRelation(rel.Name)' ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)'></i>
-							  					{{rel.Name}}
-							  					<select ng-change='changeAggregate(aggregateOption, rel)' ng-model='aggregateOption' ng-options="x for x in aggregators">
-												</select>
-											</td>
-							  				<td><span ng-show='!rel.IsMultivalue'>Single Value</span> <span ng-show='rel.IsMultivalue'>Multivalue</span>
-							  				</td>
-							  				<td class='relation'>{{rel.RelatedAsset.nameref}}
-											  	<i class='icon-arrow-right'></i>&nbsp;<i class='icon-arrow-left'></i>&nbsp;{{rel.ReciprocalRelation.tokenref.split('.')[1]}}
-							  				<td>
-							  					<span class='badge badge-important' ng-show='rel.IsRequired'>required</span> <span class='badge badge-warning' ng-show='rel.IsReadOnly'>read only</span> <span class='badge badge-success' ng-show='!rel.IsReadOnly'>read/write</span>
-							  				</td>
-							  			</tr>
-							  		</table>
+					<div ng-cloak>
+			     		<a name='asset-type'></a>
+						  <tabset>
+						  	<tab ng-repeat='type in metaList' active='type.selected'>
+									<tab-heading>{{type.AssetName}} <i class='icon-remove' ng-if='$index != 0'></i></tab-heading>
+									<b>Filter by attribute name:</b> <input type='text' ng-model='attributeSearch.search' />&nbsp;<span style='font-size: 75%; color: darkgray'><input type='checkbox' ng-model='attributeSearch.prefixMatch'>&nbsp;prefix-match</span>
+						  		<table class='table table-bordered table-striped table-nonfluid'>
+						  			<tr>
+						  				<th colspan='4' class='attribute-heading'>Scalar Attributes</th>
+						  			</tr>
+						  			<tr>
+						  				<th>Name</th>
+						  				<th><a href='http://community.versionone.com/VersionOne_Connect/Developer_Library/Getting_Started/Platform_Concepts/Attribute_Types' target='_blank'>Type</a></th>
+						  				<th colspan='2'>Meta Info</th>
+						  			</tr>
+						  			<tr ng-repeat='attr in type.Attributes' ng-show='attributeMatchesFilter(attr.Name)'>
+						  				<td class='attribute' ng-class='{selected: selected(attr.Name)}'>
+						  					<i class='icon-ok' ng-show='!selected(attr.Name)'
+						  						ng-click='toggleSelect(attr.Name)'>&nbsp;</i>
+						  					<i class='icon-remove' ng-show='selected(attr.Name)'
+						  						ng-click='toggleSelect(attr.Name)'></i>
+											{{attr.Name}} <i class='icon-filter' ng-click='toggleFilter(attr)'>&nbsp;</i><i class='icon-arrow-up' ng-click='sortUp(attr)'>&nbsp;</i><i class='icon-arrow-down' ng-click='sortDown(attr)'>&nbsp;</i>
+						  					<div ng-show='attr.filterVisible' class='well well-small'>
+						  						<div ng-repeat='filter in attr.filters'>
+						  							<table border='0' cellpadding='0' cellspacing='0'>
+						  								<tr style='border-top: 2px solid goldenrod'>
+						  									<td>
+																<span style='font-size: 80%' ng-click='filterRemove(attr, filter); filtersUpdate(item)'><i class='icon-minus-sign' label='Remove filter'>&nbsp;</i></span>
+						  									</td>
+						  									<td>
+																<select style='width: 50px' ng-model='filter.operator' ng-change='filtersUpdate(item)'>
+							  										<option value='none'></option>
+							  										<option value='equal'>=</option>
+										  							<option value='notEqual'>!=</option>
+																	<option value='greaterThan'>&gt;</option>
+																	<option value='greaterThanOrEqual'>&gt;=</option>
+																	<option value='lessThan'>&lt;</option>
+																	<option value='lessThanOrEqual'>&lt;=</option>
+																	<option value='exists'>+ (exists)</option>
+																	<option value='notExists'>- (not exists)</option>
+							  									</select>
+							  								</td>
+							  								<td>
+							  									<span ng-repeat='filterValue in filter.values'>
+																	<input type='text' ng-model='filterValue.value' ng-change='filtersUpdate(item)'/>
+																	<i class='icon-remove' ng-click='filterValueRemove(filter, filterValue);filtersUpdate(item)'>&nbsp;</i>
+								  									<br />
+							  									</span>
+								  								<span style='font-size: 70%; top: -10px; position: relative;' class><span ng-click='filterValueAdd(filter)'><i class='icon-plus'>&nbsp;</i> Add <b>OR</b> Value</span></span>
+								  							</td>
+								  						</tr>
+								  					</table>
+						  						</div>
+												<div style='font-size: 80%; padding-top: 8px;' ng-click='filterAdd(attr)'><i class='icon-plus-sign'>&nbsp;</i> Add Filter</div>
+						  					</div>
+						  				</td>
+						  				<td>{{attr.AttributeType}}</td>
+						  				<td colspan='2'>
+						  					<span class='badge badge-important' ng-show='attr.IsRequired'>required</span> <span class='badge badge-warning' ng-show='attr.IsReadOnly'>read only</span> <span class='badge badge-success' ng-show='!attr.IsReadOnly'>read/write</span>
+						  				</td>
+						  			</tr>
+						  			<tr>
+						  				<th colspan='4' class='attribute-heading'>Relations</th>
+						  			</tr>
+						  			<tr>
+						  				<th>Name</th>
+						  				<th>Type</th>
+						  				<th>Relation to / from</th>
+										<th>Meta Info</th>
+						  			</tr>
+						  			<tr ng-repeat='rel in type.Relations' ng-show='attributeMatchesFilter(rel.Name)'>
+											<td  ng-class='{selected: selectedRelation(rel.Name)}'>
+						  					<i class='icon-ok' ng-show='!selectedRelation(rel.Name)' ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)'>&nbsp;</i>
+						  					<i class='icon-remove' ng-show='selectedRelation(rel.Name)' ng-click='toggleSelectRelation(rel.RelatedAsset.href, rel.Name)'></i>
+						  					{{rel.Name}}
+						  					<select ng-change='changeAggregate(aggregateOption, rel)' ng-model='aggregateOption' ng-options="x for x in aggregators">
+											</select>
+										</td>
+						  				<td><span ng-show='!rel.IsMultivalue'>Single Value</span> <span ng-show='rel.IsMultivalue'>Multivalue</span>
+						  				</td>
+						  				<td class='relation'>{{rel.RelatedAsset.nameref}}
+										  	<i class='icon-arrow-right'></i>&nbsp;<i class='icon-arrow-left'></i>&nbsp;{{rel.ReciprocalRelation.tokenref.split('.')[1]}}
+						  				<td>
+						  					<span class='badge badge-important' ng-show='rel.IsRequired'>required</span> <span class='badge badge-warning' ng-show='rel.IsReadOnly'>read only</span> <span class='badge badge-success' ng-show='!rel.IsReadOnly'>read/write</span>
+						  				</td>
+						  			</tr>
+						  		</table>
 								</tab>
-							  	<tab heading='Operations'>
-							  		{{item.Operations | json}}
-								</tab>
-							  </tabset>
-							</div>
-						</div>
+						  </tabset>
 					</div>
-
 				</div>
 				<div class='span4'>
 					<strong>Query Definition</strong>:

@@ -1,7 +1,12 @@
+proxyUrl = 'http://localhost:8080'
+v1HostUrl = 'http://localhost'
+v1InstanceName = 'VersionOne.Web'
+v1Ticket = 'HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1'
+
 app = angular.module 'VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter', 'ui.ace']
 
 app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
-    baseUrl = 'http://localhost:8080/http://localhost'
+    baseUrl = "#{proxyUrl}/#{v1HostUrl}"
 
     delete $http.defaults.headers.common['X-Requested-With']
 
@@ -97,7 +102,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         $scope.showResults && $scope.radioOption == value
 
     $scope.tryIt = () ->
-        url = 'http://localhost:8080/http://localhost' + '/VersionOne.Web/query.v1?ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1'
+        url = "#{baseUrl}/#{v1InstanceName}/query.v1?ticket=#{v1Ticket}"
         payload = if $scope.showEditor then $scope.editor else $scope.queryRender()
         $http.post(url, payload).
             success (data) ->
@@ -110,6 +115,7 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
         $http.get(baseUrl + href + '?accept=text/json').
             success (data) ->
                 metaListAdd data
+                selectLastMeta()
 
     $scope.selected = (attrName) ->
         query = currentQuery()
@@ -136,7 +142,18 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
             $http.get(baseUrl + href + '?accept=text/json').
                 success (data) ->
                     metaListAdd data, attrName, query
+                    selectLastMeta()
                     $anchorScroll('asset-type')
+
+    selectLastMeta = () ->
+      lastMeta = metaList[metaList.length - 1]
+      for meta in metaList
+        meta.selected = false
+      lastMeta.selected = true
+
+    selectedMeta = (meta) ->
+      console.log 'The selected: ', meta
+      return meta.selected
 
     $scope.toggleFilter = (attr) ->
         attr.filterVisible = !attr.filterVisible
@@ -259,19 +276,20 @@ app.controller 'HomeController', ($scope, $http, $anchorScroll) ->
 
     $scope.assetTypesShow = () -> $scope.assetsVisible = true
 
-    $http.get(baseUrl + '/VersionOne.Web/rest-1.v1/Data/AssetType?sel=Name' + '&accept=text/json&ticket=HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1').success (data) ->
+    $http.get("#{baseUrl}/#{v1InstanceName}/rest-1.v1/Data/AssetType?sel=Name&accept=text/json&ticket=#{v1Ticket}").success (data) ->
         assetTypes = _.map(data.Assets, (assetType) ->
             return { Name: assetType.Attributes.Name.value }
         )
         assetTypes = _.sortBy assetTypes, (assetType) -> assetType.Name
         highlights = _.filter assetTypes, $scope.highlightedAsset
-        assetTypes = _.without assetTypes, highlights[0], highlights[1], highlights[2], highlights[3], highlights[4], highlights[5]
+        #assetTypes = _.without assetTypes, highlights[0], highlights[1], highlights[2], highlights[3], highlights[4], highlights[5]
+        assetTypes = _.without assetTypes, highlights...
         assetTypes = _.union highlights, assetTypes
 
         $scope.assetTypes.types = assetTypes
 
     $scope.assetSelect = (assetType) ->
-        $scope.explore '/VersionOne.Web/meta.v1/' + assetType.Name
+        $scope.explore "/#{v1InstanceName}/meta.v1/" + assetType.Name
         attributeSearchReset()
         $scope.assetsVisible = false
 
