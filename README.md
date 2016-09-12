@@ -8,17 +8,20 @@ http://screencast.com/t/hMR3R8VEt *
 * Clone the repo* 
 * `cd VersionOne.MetaTrain`
 * `npm install -g nws`
+* Be sure tu have installed gulp-cli. if not run: `npm install --global gulp-cli`
+* `npm install`
+* `npm gulp` -> compile this project 
 * `nws`
-* You will have to modify a few variables in the `app.coffee` file if you want to use an instance other than `http://localhost/VersionOne.Web`. 
+* You will have to modify a few variables in the `app.js` file if you want to use an instance other than `http://localhost/VersionOne.Web`. Rmember run `gulp` every time you modified this file to get the compiled version
 * And, you'll need to grab your `ticket` value from your browser's cookies to update that in the code.
 
 ## The configuration variable defaults are:
 
-```coffeescript
-proxyUrl = 'http://localhost:8080'
-v1HostUrl = 'http://localhost'
-v1InstanceName = 'VersionOne.Web'
-v1Ticket = 'HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1'
+```ES6
+const proxyUrl = 'http://localhost:8080';
+const v1HostUrl = 'http://localhost';
+const v1InstanceName = 'VersionOne.Web';
+const v1Ticket = 'HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1';
 ```
 
 
