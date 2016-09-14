@@ -1,0 +1,24 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "http://screencast.com/t/hMR3R8VEt *",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JogoShugh/VersionOne.MetaTrain.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JogoShugh/VersionOne.MetaTrain/issues"
+  },
+  "homepage": "https://github.com/JogoShugh/VersionOne.MetaTrain#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.14.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
+  }
+}
