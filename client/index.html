@@ -28,6 +28,20 @@
 			I hear the train a comin'
 			</br>
 			<a href='https://www.youtube.com/watch?v=UZkrVSB4uAw' target='_blank'><img src='johnny.png' /></a>
+
+			<div style='margin: 10px' ng-show='configPending'>
+				<div style='display: inline-block; background-color: lightgray; padding: 8px;'>
+					<h4>Instance URL:</h4>
+					<input type='text' ng-model='config.instanceUrl' />
+					<h4>Access Token:</h4>
+					<input type='text' ng-model='config.accessToken' />
+					<br />
+					<a class='btn btn-mini btn-success' ng-click='configSave()'><i class='icon-cog'>&nbsp;</i> Apply</a>
+				</div>
+			</div>
+			<div style='margin: 10px' ng-show='!configPending'>
+				<i><small>using {{config.instanceUrl}}</small></i>
+			</div>
 		</center>
 
 		<div ng-show='assetsVisible' ng-cloak>
@@ -38,7 +52,7 @@
 			</center>
 		</div>
 
-	   	<div class='container' ng-show='!assetsVisible' ng-cloak>
+	   	<div class='container' ng-show='!assetsVisible && !configPending' ng-cloak>
 	   		<div class='row'>
 	   			<div class='span12'>
 	   				<a class='btn btn-mini btn-info' ng-click='assetTypesShow()'><i class='icon-backward'>&nbsp;</i> Reset</a>

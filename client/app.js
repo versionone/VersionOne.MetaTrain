@@ -1,14 +1,29 @@
-const proxyUrl = 'http://localhost:8080';
-const v1HostUrl = 'http://localhost';
-const v1InstanceName = 'VersionOne.Web';
-const v1Ticket = 'HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0wj/Pzf0dSjKKxAGqf4JFIdBMgObRKtwQRP1';
+const proxyUrl = '/pt';
+/*
+https://www14.v1host.com/v1sdktesting
+1.vPHZYd9OPRSFBgEb76qCOLKdxy0=
+*/
 
-let app = angular.module('VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter', 'ui.ace']);
+// Do not change anything below this comment
+
+let auth = {};
+
+const parseUrl = url => {
+    // Examples:
+    // https://www14.v1host.com/v1sdktesting
+    // http://localhost/
+    const rx = /(https?:\/\/.*?)\/(.*)/;
+    const match = url.match(rx);
+    return {
+        instanceBaseUrl: match[1],
+        instanceName: match[2]
+    };
+};
+
+const app = angular.module('VersionOne.MetaTrain', ['ui.bootstrap', 'jsonFormatter', 'ui.ace']);
 
 app.controller('HomeController', ($scope, $http, $anchorScroll) => {
-    let baseUrl = `${proxyUrl}/${v1HostUrl}`;
-
-    delete($http.defaults.headers.common['X-Requested-With']);
+    delete $http.defaults.headers.common['X-Requested-With'];
 
     let makeQuery = (assetName) => ({ from: assetName, filter: [], sort: [], select: [] });
 
@@ -60,6 +75,29 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
         metaList.push(metaInfo);
     };
 
+    $scope.config = {
+        instanceUrl: '',
+        accessToken: '',
+        instanceBaseUrl: '',
+        instanceName: ''
+    };
+
+    $scope.configPending = true;
+
+    $scope.configSave = () => {
+        auth.headers = {
+            Authorization: `Bearer ${$scope.config.accessToken}`
+        };
+
+        const urlParts = parseUrl($scope.config.instanceUrl);
+        $scope.config.instanceBaseUrl = urlParts.instanceBaseUrl;
+        $scope.config.instanceName = urlParts.instanceName;
+
+        $scope.assetTypesSearch();
+
+        $scope.configPending = false;
+    };
+
     $scope.fillEditor = () => $scope.editor = $scope.queryRender();
 
     $scope.aggregateOption = '';
@@ -95,9 +133,9 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
     $scope.showFormatted = (value) => $scope.showResults && $scope.radioOption === value;
 
     $scope.tryIt = () => {
-        const url = `${baseUrl}/${v1InstanceName}/query.v1?ticket=${v1Ticket}`;
+        const url = `${proxyUrl}/${$scope.config.instanceUrl}/query.v1`;
         const payload = $scope.showEditor ? $scope.editor : $scope.queryRender();
-        $http.post(url, payload)
+        $http.post(url, payload, auth)
             .success((data) => {
                 $scope.showResults = true;
                 $scope.queryResult = JSON.stringify(data, '\t', 2);
@@ -107,7 +145,7 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
 
     $scope.explore = (href) => {
         metaListReset();
-        $http.get(baseUrl + href + '?accept=text/json')
+        $http.get(proxyUrl + '/' + $scope.config.instanceBaseUrl + href + '?accept=text/json', auth)
             .success((data) => metaListAdd(data));
     }
 
@@ -131,7 +169,7 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
         if (obj)
             query.select = _.without(query.select, obj);
         else {
-            $http.get(baseUrl + href + '?accept=text/json')
+            $http.get($scope.config.instanceBaseUrl + href + '?accept=text/json', auth)
                 .success((data) => {
                     metaListAdd(data, attrName, query);
                     $anchorScroll('asset-type');
@@ -253,7 +291,7 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
       	return true;
     }
 
-    $scope.assetsVisible = true
+    $scope.assetsVisible = false;
 
     $scope.assetTypes = {types:[]};
 
@@ -263,19 +301,24 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
 
     $scope.assetTypesShow = () => $scope.assetsVisible = true;
 
-    $http.get(`${baseUrl}/${v1InstanceName}/rest-1.v1/Data/AssetType?sel=Name&accept=text/json&ticket=${v1Ticket}`)
-    	.success((data) => {
-	        let assetTypes = _.map(data.Assets, (assetType) => ({ Name: assetType.Attributes.Name.value }));
-	        assetTypes = _.sortBy(assetTypes, (assetType) => assetType.Name);
-	        let highlights = _.filter(assetTypes, $scope.highlightedAsset);
-	        assetTypes = _.without(assetTypes, highlights[0], highlights[1], highlights[2], highlights[3], highlights[4], highlights[5]);
-	        assetTypes = _.union(highlights, assetTypes);
+    $scope.assetTypesSearch = () => {
+        $http.get(`${proxyUrl}/${$scope.config.instanceUrl}/rest-1.v1/Data/AssetType?sel=Name&accept=text/json`, auth)
+        	.success((data) => {
+    	        let assetTypes = _.map(data.Assets, (assetType) => ({ Name: assetType.Attributes.Name.value }));
+    	        assetTypes = _.sortBy(assetTypes, (assetType) => assetType.Name);
+    	        let highlights = _.filter(assetTypes, $scope.highlightedAsset);
+    	        assetTypes = _.without(assetTypes, highlights[0], highlights[1], highlights[2], highlights[3], highlights[4], highlights[5]);
+    	        assetTypes = _.union(highlights, assetTypes);
 
-            $scope.assetTypes.types = assetTypes;
-	});
+                $scope.assetTypes.types = assetTypes;
+                
+                $scope.assetTypesShow();
+    	});
+    }
 
     $scope.assetSelect = (assetType) => {
-        $scope.explore(`/${v1InstanceName}/meta.v1/` + assetType.Name);
+        // TODO
+        $scope.explore(`/${$scope.config.instanceName}/meta.v1/` + assetType.Name);
         attributeSearchReset();
         $scope.assetsVisible = false;
     }
