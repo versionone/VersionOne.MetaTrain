@@ -182,9 +182,9 @@ app.controller('HomeController', function ($scope, $http, $anchorScroll) {
     $scope.toggleSelectRelation = function (href, attrName) {
         var query = currentQuery();
         attributeSearchReset();
-        obj = _.findWhere(query.select, { from: attrName });
+        var obj = _.findWhere(query.select, { from: attrName });
         if (obj) query.select = _.without(query.select, obj);else {
-            $http.get($scope.config.instanceBaseUrl + href + '?accept=text/json', auth).success(function (data) {
+            $http.get(proxyUrl + '?url=' + encodeURIComponent($scope.config.instanceBaseUrl + href + '?accept=text/json'), auth).success(function (data) {
                 metaListAdd(data, attrName, query);
                 $anchorScroll('asset-type');
             });

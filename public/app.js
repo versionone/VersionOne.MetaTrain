@@ -161,13 +161,13 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
     	_.findWhere(currentQuery().select, {from:attrName}) != undefined;
 
     $scope.toggleSelectRelation = (href, attrName) => {
-        let query = currentQuery();
+        const query = currentQuery();
         attributeSearchReset();
-        obj = _.findWhere(query.select, {from:attrName});
+        const obj = _.findWhere(query.select, {from:attrName});
         if (obj)
             query.select = _.without(query.select, obj);
         else {
-            $http.get($scope.config.instanceBaseUrl + href + '?accept=text/json', auth)
+            $http.get(proxyUrl + '?url=' + encodeURIComponent($scope.config.instanceBaseUrl + href + '?accept=text/json'), auth)
                 .success((data) => {
                     metaListAdd(data, attrName, query);
                     $anchorScroll('asset-type');
