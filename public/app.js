@@ -133,7 +133,7 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
     $scope.showFormatted = (value) => $scope.showResults && $scope.radioOption === value;
 
     $scope.tryIt = () => {
-        const url = `${proxyUrl}?url=${$scope.config.instanceUrl}/query.v1`;
+        const url = `${proxyUrl}?url=${encodeURIComponent($scope.config.instanceUrl + '/query.v1')}`;
         const payload = $scope.showEditor ? $scope.editor : $scope.queryRender();
         $http.post(url, payload, auth)
             .success((data) => {
@@ -145,7 +145,7 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
 
     $scope.explore = (href) => {
         metaListReset();
-        $http.get(proxyUrl + '?url=' + $scope.config.instanceBaseUrl + href + '?accept=text/json', auth)
+        $http.get(proxyUrl + '?url=' + encodeURIComponent($scope.config.instanceBaseUrl + href + '?accept=text/json'), auth)
             .success((data) => metaListAdd(data));
     }
 
@@ -302,7 +302,7 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
     $scope.assetTypesShow = () => $scope.assetsVisible = true;
 
     $scope.assetTypesSearch = () => {
-        $http.get(`${proxyUrl}?url=${$scope.config.instanceUrl}/rest-1.v1/Data/AssetType?sel=Name&accept=text/json`, auth)
+        $http.get(`${proxyUrl}?url=${encodeURIComponent($scope.config.instanceUrl + '/rest-1.v1/Data/AssetType?sel=Name&accept=text/json')}`, auth)
         	.success((data) => {
     	        let assetTypes = _.map(data.Assets, (assetType) => ({ Name: assetType.Attributes.Name.value }));
     	        assetTypes = _.sortBy(assetTypes, (assetType) => assetType.Name);

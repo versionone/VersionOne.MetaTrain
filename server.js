@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.static(__dirname + '/public'));
 
 function getUrl(req) {
-    var url = req.originalUrl.substr(8, req.originalUrl.length - 8);
+    var url = decodeURIComponent(req.originalUrl.substr(8, req.originalUrl.length - 8));
     return url;
 }
 
