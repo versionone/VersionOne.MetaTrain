@@ -8,9 +8,9 @@ app.use(bodyParser.text({ type : 'application/json' }));
 app.use(bodyParser.text({ type : 'application/xml' }));
 app.use(cors());
 
-function getUrl(url) {
-    //remove the initial slash    
-    return url.substr(4, url.length - 4);
+function getUrl(req) {
+    var url = req.originalUrl.substr(8, req.originalUrl.length - 8);
+    return url;
 }
 
 function getHeaders(headers) {
@@ -35,9 +35,9 @@ function responseError(response, msg) {
     response.end(JSON.stringify(error));
 }
 
-app.get('/pt/*', function (req, res, next) {
+app.get('/pt', function (req, res, next) {
     try {
-        var url = getUrl(req.url);
+        var url = getUrl(req);
         var options = {
             url: url,
             method: 'GET',
@@ -54,10 +54,10 @@ app.get('/pt/*', function (req, res, next) {
     }
 });
 
-app.post('/pt/*', function (req, res, next) {
+app.post('/pt', function (req, res, next) {
     try {
         var options = {
-            url: getUrl(req.url),
+            url: getUrl(req),
             method: 'POST',
             body: req.body,
             headers: getHeaders(req.headers)
