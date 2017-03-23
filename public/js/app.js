@@ -3,10 +3,8 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var proxyUrl = '/pt';
-/*
-https://www14.v1host.com/v1sdktesting
-1.vPHZYd9OPRSFBgEb76qCOLKdxy0=
-*/
+var defaultInstanceUrl = 'https://www16.v1host.com/api-examples';
+var defaultAccessToken = '1.IICl4E986LwM1Ogr8td8SAeEv5c=';
 
 // Do not change anything below this comment
 
@@ -98,8 +96,8 @@ app.controller('HomeController', function ($scope, $http, $anchorScroll) {
     };
 
     $scope.config = {
-        instanceUrl: 'https://www14.v1host.com/v1sdktesting',
-        accessToken: '1.vPHZYd9OPRSFBgEb76qCOLKdxy0=',
+        instanceUrl: defaultInstanceUrl,
+        accessToken: defaultAccessToken,
         instanceBaseUrl: '',
         instanceName: ''
     };
