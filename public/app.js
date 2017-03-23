@@ -1,8 +1,6 @@
 const proxyUrl = '/pt';
-/*
-https://www14.v1host.com/v1sdktesting
-1.vPHZYd9OPRSFBgEb76qCOLKdxy0=
-*/
+const defaultInstanceUrl = 'https://www16.v1host.com/api-examples'
+const defaultAccessToken = '1.IICl4E986LwM1Ogr8td8SAeEv5c='
 
 // Do not change anything below this comment
 
@@ -76,8 +74,8 @@ app.controller('HomeController', ($scope, $http, $anchorScroll) => {
     };
 
     $scope.config = {
-        instanceUrl: 'https://www14.v1host.com/v1sdktesting',
-        accessToken: '1.vPHZYd9OPRSFBgEb76qCOLKdxy0=',
+        instanceUrl: defaultInstanceUrl,
+        accessToken: defaultAccessToken,
         instanceBaseUrl: '',
         instanceName: ''
     };
