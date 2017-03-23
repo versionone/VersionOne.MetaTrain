@@ -8,6 +8,8 @@ app.use(bodyParser.text({ type : 'application/json' }));
 app.use(bodyParser.text({ type : 'application/xml' }));
 app.use(cors());
 
+app.use(express.static(__dirname + '/public'));
+
 function getUrl(req) {
     var url = req.originalUrl.substr(8, req.originalUrl.length - 8);
     return url;
@@ -75,8 +77,6 @@ app.post('/pt', function (req, res, next) {
 });
 
 var port = parseInt(process.env.PORT) || 5000;
-
-app.use(express.static(__dirname + '/public'));
 
 app.listen(port, function () {
     console.log('VersionOne.MetaTrain with CORS Proxy listening on port ' + port);
