@@ -76,7 +76,7 @@ app.post('/pt/*', function (req, res, next) {
 
 var port = parseInt(process.env.PORT) || 5000;
 
-//app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/public'));
 
 app.listen(port, function () {
     console.log('VersionOne.MetaTrain with CORS Proxy listening on port ' + port);
