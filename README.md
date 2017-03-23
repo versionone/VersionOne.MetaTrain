@@ -29,7 +29,7 @@ const v1Ticket = 'HFZlcnNpb25PbmUuV2ViLkF1dGhlbnRpY2F0b3IUAAAABWFkbWlurDxBxOzP0w
 
 First, pick an Asset Type from which to start building your query:
 
-![assets.png](assets.png)
+![assets.png](client/assets.png)
 
 Next, you can:
 
@@ -38,7 +38,7 @@ Next, you can:
 * For relationships, click the checkmark near the attribute name to overlay the attributes for that relationship onto the panel.
   * Press the `back` link to go back to the parent asset type
 
-![attributes.png](attributes.png)  
+![attributes.png](client/attributes.png)  
 
 # Credits
 
@@ -69,4 +69,3 @@ I bet I'd get the feature out a little faster all the time
 Far from Meta prison, that's where I want to stay
 And I'd let that lonesome cursor blink those bits away....
 ```
-
