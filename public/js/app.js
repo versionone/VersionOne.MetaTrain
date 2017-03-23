@@ -152,7 +152,7 @@ app.controller('HomeController', function ($scope, $http, $anchorScroll) {
     };
 
     $scope.tryIt = function () {
-        var url = proxyUrl + '?url=' + $scope.config.instanceUrl + '/query.v1';
+        var url = proxyUrl + '?url=' + encodeURIComponent($scope.config.instanceUrl + '/query.v1');
         var payload = $scope.showEditor ? $scope.editor : $scope.queryRender();
         $http.post(url, payload, auth).success(function (data) {
             $scope.showResults = true;
@@ -163,7 +163,7 @@ app.controller('HomeController', function ($scope, $http, $anchorScroll) {
 
     $scope.explore = function (href) {
         metaListReset();
-        $http.get(proxyUrl + '?url=' + $scope.config.instanceBaseUrl + href + '?accept=text/json', auth).success(function (data) {
+        $http.get(proxyUrl + '?url=' + encodeURIComponent($scope.config.instanceBaseUrl + href + '?accept=text/json'), auth).success(function (data) {
             return metaListAdd(data);
         });
     };
@@ -349,7 +349,7 @@ app.controller('HomeController', function ($scope, $http, $anchorScroll) {
     };
 
     $scope.assetTypesSearch = function () {
-        $http.get(proxyUrl + '?url=' + $scope.config.instanceUrl + '/rest-1.v1/Data/AssetType?sel=Name&accept=text/json', auth).success(function (data) {
+        $http.get(proxyUrl + '?url=' + encodeURIComponent($scope.config.instanceUrl + '/rest-1.v1/Data/AssetType?sel=Name&accept=text/json'), auth).success(function (data) {
             var assetTypes = _.map(data.Assets, function (assetType) {
                 return { Name: assetType.Attributes.Name.value };
             });
